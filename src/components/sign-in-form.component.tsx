@@ -17,7 +17,7 @@ export default function SignInForm() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm({
+    } = useForm<SignInFormValues>({
         resolver: zodResolver(signInSchema),
     })
 
