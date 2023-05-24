@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Input from './input.component'
+import { createUser } from '@/actions/user'
 
 const signInSchema = z.object({
     username: z.string().min(3).max(50),
@@ -22,8 +23,8 @@ export default function SignUpForm() {
         resolver: zodResolver(signInSchema),
     })
 
-    const onSubmit = handleSubmit((data) => {
-        console.log(data)
+    const onSubmit = handleSubmit(async (data) => {
+        await createUser(data)
     })
 
     return (
