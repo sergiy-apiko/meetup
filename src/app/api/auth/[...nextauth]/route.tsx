@@ -39,12 +39,30 @@ export const authOptions: NextAuthOptions = {
                 if (!isPassValid) return null
 
                 // Return null if user data could not be retrieved
-                return user
+                return {
+                    id: user.id,
+                    name: user.username,
+                    email: user.email,
+                }
             },
         }),
     ],
     pages: {
         signIn: '/sign-in',
+    },
+    callbacks: {
+        jwt: ({ token, ...params }) => {
+            if (params.user) {
+                token.name = params.user.name
+            }
+            return token
+        },
+        session: ({ session }) => {
+            return session
+        },
+    },
+    session: {
+        strategy: 'jwt',
     },
 }
 const handler = NextAuth(authOptions)

@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Input from './input.component'
 import { createUser } from '@/actions/user'
+import Button from './button.component'
 
 const signInSchema = z.object({
     username: z.string().min(3).max(50),
@@ -45,9 +46,7 @@ export default function SignUpForm() {
                 placeholder="Password"
                 error={errors.password?.message}
             />
-            <button className="bg-[#f94d6a] w-full p-2 rounded text-sm">
-                Create an account
-            </button>
+            <Button type="submit">Create an account</Button>
         </form>
     )
 }
