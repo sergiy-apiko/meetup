@@ -1,4 +1,4 @@
-'user server'
+'use server'
 
 import { prisma } from '@/core/prisma'
 import { hashPassword } from '@/utils/password'
@@ -18,4 +18,8 @@ export const createUser = async (options: CreateUserOptions) => {
         },
     })
     return user
+}
+
+export const getUserByEmail = (email: string) => {
+    return prisma.user.findUnique({ where: { email } })
 }

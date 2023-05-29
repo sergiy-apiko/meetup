@@ -3,8 +3,17 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import SignUpForm from '@/components/sign-up-form.component'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { redirect } from 'next/navigation'
 
-export default function page() {
+export default async function page() {
+    const user = await getServerSession(authOptions)
+
+    if (user) {
+        return redirect('/')
+    }
+
     return (
         <main className="flex items-center justify-center h-full ">
             <div className="w-96  ">
