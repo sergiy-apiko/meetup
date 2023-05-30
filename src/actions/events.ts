@@ -29,3 +29,17 @@ export const createEvent = async (options: CreateEventOptions) => {
     })
     return event
 }
+
+export const getAllEvents = () => {
+    return prisma.event.findMany()
+}
+
+export const getUserEvents = (email: string) => {
+    return prisma.event.findMany({
+        where: {
+            user: {
+                email,
+            },
+        },
+    })
+}
