@@ -1,8 +1,9 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function logo() {
     return (
-        <span>
+        <Link href="/">
             <Image
                 className="mx-auto"
                 src="/logo.svg"
@@ -10,6 +11,6 @@ export default function logo() {
                 width={25}
                 height={25}
             />
-        </span>
+        </Link>
     )
 }

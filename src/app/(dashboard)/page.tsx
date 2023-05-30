@@ -1,3 +1,5 @@
+import ButtonLink from '@/components/ButtonLink.component'
+import Container from '@/components/container.component'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import React from 'react'
@@ -11,8 +13,11 @@ export default async function page() {
     }
 
     return (
-        <div>
-            <pre>{JSON.stringify(user, null, 2)}</pre>
-        </div>
+        <Container>
+            <div className="flex justify-between">
+                <h1 className="text-white text-2xl font-bold">My Events</h1>
+                <ButtonLink href="/events/create">+ Create Event</ButtonLink>
+            </div>
+        </Container>
     )
 }

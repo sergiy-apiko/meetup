@@ -7,7 +7,7 @@ export default function NavBar() {
     const { data: session, status } = useSession()
 
     return (
-        <nav className="px-8 py-3 bg-black/25 flex justify-between items-center">
+        <nav className="px-8 py-3 bg-black/25 flex justify-between items-center min-h-[68px] mb-8">
             <Logo></Logo>
             {status === 'loading' && <div>Loading ...</div>}
             {status === 'authenticated' && (
