@@ -6,15 +6,27 @@ interface ButtonProps {
     type?: React.ComponentProps<'button'>['type']
     children?: React.ReactNode
     onClick?: React.ComponentProps<'button'>['onClick']
-    disabled?: Boolean
+    disabled?: React.ComponentProps<'button'>['disabled']
+    color?: String
 }
 
 export default function Button(props: ButtonProps) {
-    const { fullWidth, type = 'button', disabled, children, onClick } = props
+    const {
+        fullWidth,
+        type = 'button',
+        color,
+        disabled,
+        children,
+        onClick,
+    } = props
+    const colorClass = color ? color : `bg-[#f94d6a]`
     const buttonClasses = clsx(
-        `bg-[#f94d6a] px-4 py-2 border-0 rounded text-white font-bold text-sm disabled:opacity-70`,
+        `${colorClass} px-4 py-2 border-0 rounded text-white font-bold text-sm disabled:opacity-70`,
         {
             'w-full': fullWidth,
+        },
+        {
+            [`bg-${color}`]: !!color,
         }
     )
     return (

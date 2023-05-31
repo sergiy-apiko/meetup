@@ -5,6 +5,7 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import { authOptions } from '../api/auth/[...nextauth]/route'
+import Link from 'next/link'
 
 export default async function page() {
     const session = await getServerSession(authOptions)
@@ -22,17 +23,19 @@ export default async function page() {
             <div className="flex flex-col gap-5">
                 {events.map((event) => {
                     return (
-                        <div
-                            key={event.id}
-                            className="flex justify-between bg-black/30 p-4 border-0 rounded"
-                        >
-                            <h2 className="text-white text-2xl">
-                                {event.title}
-                            </h2>
-                            <p className="text-white">
-                                {event.date.toLocaleString()}
-                            </p>
-                        </div>
+                        <Link href={`/events/${event.id}`} key={event.id}>
+                            <div className="flex justify-between bg-black/30 hover:bg-black/40 hover:cursor-pointer p-4 border-0 rounded">
+                                <h2 className="text-white text-2xl">
+                                    {event.title}
+                                </h2>
+                                <p className="text-white">
+                                    {event.date.toLocaleString()}
+                                    <span className="ml-5 font-bold text-[25px]">
+                                        {'>'}
+                                    </span>
+                                </p>
+                            </div>
+                        </Link>
                     )
                 })}
             </div>

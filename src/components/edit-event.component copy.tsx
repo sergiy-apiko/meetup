@@ -11,20 +11,22 @@ import ImageInput from './image-input.component'
 import Input from './input.component'
 import TextArea from './textarea.component'
 
-const createEventSchema = z.object({
+const editEventSchema = z.object({
     title: z.string().min(3).max(255),
     description: z.string().min(3).max(255),
     date: z.string(),
     banner: z.any(),
     address: z.string().min(3).max(255),
 })
-type CreateEventFormValues = z.infer<typeof createEventSchema>
+type EditEventFormValues = z.infer<typeof editEventSchema>
 
 interface CreateEventFormProps {
-    defaultValues?: CreateEventFormValues
+    defaultValues?: EditEventFormValues
+    eventId: String
 }
-export default function CreateEventForm({
+export default function EditEventForm({
     defaultValues,
+    eventId,
 }: CreateEventFormProps) {
     const router = useRouter()
     const isRendered = useRendered()
@@ -33,21 +35,24 @@ export default function CreateEventForm({
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
-    } = useForm<CreateEventFormValues>({
+    } = useForm<EditEventFormValues>({
         defaultValues: defaultValues
             ? { ...defaultValues, date: defaultValues.date.slice(0, -1) }
             : {},
-        resolver: zodResolver(createEventSchema),
+        resolver: zodResolver(editEventSchema),
     })
     const onSubmit = handleSubmit(async (data) => {
-        const fileBase64 = await toBase64(data.banner[0])
-        console.log(data, fileBase64)
+        const fileBase64 =
+            typeof data.banner === 'string'
+                ? data.banner
+                : await toBase64(data.banner[0])
+        console.log(data)
         await createEvent({
             ...data,
             banner: fileBase64,
             date: new Date(data.date),
         })
-        router.replace('/')
+        router.replace(`/events/${eventId}`)
     })
 
     return (
@@ -56,6 +61,7 @@ export default function CreateEventForm({
                 placeholder="Event Banner"
                 {...register('banner')}
                 disabled={!isRendered}
+                defaultImage={defaultValues?.banner}
             />
             <Input
                 placeholder="Event Title"
@@ -83,7 +89,7 @@ export default function CreateEventForm({
             />
 
             <Button type="submit" disabled={!isRendered || isSubmitting}>
-                Create Event
+                Edit Event
             </Button>
         </form>
     )

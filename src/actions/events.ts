@@ -43,3 +43,11 @@ export const getUserEvents = (email: string) => {
         },
     })
 }
+
+export const getEventById = (id: string) => {
+    return prisma.event.findUnique({
+        where: {
+            id,
+        },
+    })
+}

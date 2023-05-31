@@ -12,11 +12,14 @@ interface ImageInputProps {
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
     name: string
     disabled?: React.ComponentProps<'button'>['disabled']
+    defaultImage?: string
 }
 const ImageInput = forwardRef<HTMLInputElement, ImageInputProps>(
-    ({ error, disabled, ...inputProps }, ref) => {
+    ({ error, disabled, defaultImage, ...inputProps }, ref) => {
         const inputRef = useForwardRef(ref)
-        const [imageUrl, setImageUrl] = useState<string | null>()
+        const [imageUrl, setImageUrl] = useState<string | null | undefined>(
+            defaultImage
+        )
         const handleUpload = () => {
             inputRef.current?.click()
         }
