@@ -6,6 +6,8 @@ import { z } from 'zod'
 import Input from './input.component'
 import { createUser } from '@/actions/user'
 import Button from './button.component'
+import { toast } from 'react-toastify'
+import { signIn } from 'next-auth/react'
 
 const signInSchema = z.object({
     username: z.string().min(3).max(50),
@@ -25,7 +27,16 @@ export default function SignUpForm() {
     })
 
     const onSubmit = handleSubmit(async (data) => {
-        await createUser(data)
+        try {
+            await createUser(data)
+            signIn('credentials', {
+                email: data.email,
+                password: data.password,
+                callbackUrl: '/',
+            })
+        } catch (error: any) {
+            toast.error('User already exists')
+        }
     })
 
     return (

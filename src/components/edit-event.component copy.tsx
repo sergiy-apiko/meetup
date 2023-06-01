@@ -1,5 +1,5 @@
 'use client'
-import { createEvent } from '@/actions/events'
+import { updateEvent } from '@/actions/events'
 import useRendered from '@/hooks/use-rendered.hook'
 import { toBase64 } from '@/utils/files'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -22,7 +22,7 @@ type EditEventFormValues = z.infer<typeof editEventSchema>
 
 interface CreateEventFormProps {
     defaultValues?: EditEventFormValues
-    eventId: String
+    eventId: string
 }
 export default function EditEventForm({
     defaultValues,
@@ -46,11 +46,11 @@ export default function EditEventForm({
             typeof data.banner === 'string'
                 ? data.banner
                 : await toBase64(data.banner[0])
-        console.log(data)
-        await createEvent({
+        await updateEvent({
             ...data,
             banner: fileBase64,
             date: new Date(data.date),
+            id: eventId,
         })
         router.replace(`/events/${eventId}`)
     })

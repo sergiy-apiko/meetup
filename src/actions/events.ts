@@ -9,6 +9,7 @@ interface CreateEventOptions {
     date: Date
     banner: string
     address: string
+    id?: string
 }
 
 export const createEvent = async (options: CreateEventOptions) => {
@@ -49,5 +50,45 @@ export const getEventById = (id: string) => {
         where: {
             id,
         },
+    })
+}
+
+export const updateEvent = async ({ id, ...options }: CreateEventOptions) => {
+    const user = await getUserFromSession()
+    if (!user) {
+        throw new Error('Not found')
+    }
+    const event = await prisma.event.findUnique({
+        where: {
+            id,
+        },
+    })
+    if (!event || event?.user_id !== user.id) {
+        throw new Error('Event not found')
+    }
+
+    return prisma.event.update({
+        where: {
+            id,
+        },
+        data: options,
+    })
+}
+
+export const deleteEvent = async (id: string) => {
+    const user = await getUserFromSession()
+    if (!user) {
+        throw new Error('Not authorized')
+    }
+    const event = await prisma.event.findUnique({
+        where: {
+            id,
+        },
+    })
+    if (!event || event?.user_id !== user.id) {
+        throw new Error('Event not found')
+    }
+    return prisma.event.delete({
+        where: { id },
     })
 }

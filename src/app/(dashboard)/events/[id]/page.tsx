@@ -1,8 +1,8 @@
-import { getAllEvents, getEventById } from '@/actions/events'
+import { getEventById } from '@/actions/events'
 import Button from '@/components/button.component'
 import ButtonLink from '@/components/ButtonLink.component'
 import Container from '@/components/container.component'
-import CreateEventForm from '@/components/create-event.component'
+import DeleteButton from '@/components/delete-button.component'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
@@ -25,7 +25,7 @@ export default async function EventPage({ params }: PageParams) {
                     >
                         Edit
                     </ButtonLink>
-                    <Button>Delete</Button>
+                    <DeleteButton id={params.id!} />
                 </div>
             </div>
             {event.banner && (

@@ -6,6 +6,7 @@ import { z } from 'zod'
 import Input from './input.component'
 import { signIn } from 'next-auth/react'
 import Button from './button.component'
+import { toast } from 'react-toastify'
 
 const signInSchema = z.object({
     email: z.string().email(),
@@ -23,12 +24,16 @@ export default function SignInForm() {
         resolver: zodResolver(signInSchema),
     })
 
-    const onSubmit = handleSubmit((data) => {
-        signIn('credentials', {
+    const onSubmit = handleSubmit(async (data) => {
+        const d = await signIn('credentials', {
             email: data.email,
             password: data.password,
-            callbackUrl: '/',
+            redirect: false,
         })
+
+        if (d?.error) {
+            toast.error("Wrong credentials or user doesn't exists")
+        }
     })
 
     return (
